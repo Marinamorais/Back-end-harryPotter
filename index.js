@@ -50,8 +50,8 @@ app.post("/bruxos", async (req, res) => {
     const { nome, idade, casa, habilidade, status_sangue, patrono } = req.body;
   
     try {
-        const casaValidada = verificaHouse(casa);
-        const statusSangueValidado = verificaBloodStatus(status_sangue);
+        const casaValidada = verificaCasa(casa);
+        const statusSangueValidado = verificaStatus(status_sangue);
 
         const result = await pool.query(
             'INSERT INTO bruxos (nome, idade, casa, habilidade, status_sangue, patrono) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
@@ -74,8 +74,8 @@ app.put("/bruxos/:id", async (req, res) => {
     const { nome, idade, casa, habilidade, status_sangue, patrono } = req.body;
   
     try {
-        const casaValidada = verificaHouse(casa);
-        const statusSangueValidado = verificaBloodStatus(status_sangue);
+        const casaValidada = verificaCasa(casa);
+        const statusSangueValidado = verificaStatus(status_sangue);
 
         const result = await pool.query(
             'UPDATE bruxos SET nome = $1, idade = $2, casa = $3, habilidade = $4, status_sangue = $5, patrono = $6 WHERE id = $7 RETURNING *',
@@ -108,7 +108,7 @@ app.delete( "/bruxos/:id", async (req, res) => {
   });
 
 
-const verificaHouse = (house) => {
+const verificaCasa = (house) => {
     const houses = ["Grifinória", "Sonserina", "Corvinal", "Lufa-Lufa"];
     if (houses.includes(house)) {
         return house;
@@ -117,10 +117,10 @@ const verificaHouse = (house) => {
     }
 };
 
-const verificaBloodStatus = (bloodStatus) => {
+const verificaStatus = (Status) => {
     const validBloodStatus = ["Mestiço", "Puro", "Trouxa"];
-    if (validBloodStatus.includes(bloodStatus)) {
-        return bloodStatus;
+    if (validBloodStatus.includes(Status)) {
+        return Status;
     } else {
         return "Desconhecido"; 
     }
